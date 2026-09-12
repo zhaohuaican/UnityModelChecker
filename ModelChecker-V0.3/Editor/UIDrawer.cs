@@ -51,7 +51,7 @@ public static class UIDrawer
     }
 
     private const string TOOL_NAME = "模型规范检查器";
-    private const string VERSION_INFO = "v1.0.0";
+    private const string VERSION_INFO = "v0.3";
     private const string AUTHOR_INFO = "阿灿";
 
     #region 设计 Token（间距 4pt 基线 / 8pt 栅格；字号阶梯；尺寸统一）
