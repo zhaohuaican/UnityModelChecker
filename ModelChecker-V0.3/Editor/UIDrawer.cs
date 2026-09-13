@@ -9,24 +9,6 @@ using UnityEngine;
  *
  * 作者: 阿灿
  * 创建日期: 2023-06-15
- * UI 改版: 2026-09-12
- *
- * 描述:
- *   仅负责绘制，不含任何检查逻辑（ModelChecker.cs / ReportExporter.cs / DataModels.cs 未改动）。
- *
- *   布局：顶部命令栏 → 配置区（可折叠）→ 左侧摘要栏 + 右侧数据表格 → 底部状态栏
- *   配色：全部走设计 token（冷灰蓝中性色 + 靛蓝主色 + 语义功能色）
- *        控件统一落在"机身色" BgPanel 上，靠明度差形成层次：
- *        输入框（Unity 原生样式，比 BgPanel 暗/更白）→ 看着凹进去；
- *        按钮（3x3 九宫格贴图，比 BgPanel 亮）→ 看着凸起来。
- *   控件：统一高度、完整四态（默认 / 悬停 / 按下 / 禁用）、颜色之外还有文字表意
- *
- *   ⚠ 两条铁律（踩过坑，别违反）：
- *   1) 输入框绝不能加自定义 GUIStyle / 背景 —— 会失去编辑能力，用 EditorGUILayout 默认即可。
- *   2) 按钮绝不能自己接管 GUIUtility.hotControl / Event.current.Use() —— 会抢走输入框的鼠标事件，
- *      表现为"按钮点得动、输入框点不进去"。外观靠 GUIStyle 状态贴图，事件一律交给 Unity。
- *
- *   设计原则：以用户任务为中心、一致性、层级清晰、反馈明确、可访问、可维护。
  */
 
 public static class UIDrawer
@@ -635,7 +617,7 @@ public static class UIDrawer
 
     #endregion
 
-    #region 1. 顶部命令栏
+  #region 1. 顶部命令栏
 
     public static UiAction DrawTopBar(ModelStandardChecker window, bool isChecking, bool configOpen)
     {
@@ -654,6 +636,20 @@ public static class UIDrawer
         EditorGUILayout.LabelField(VERSION_INFO + "  ·  " + AUTHOR_INFO, Styles.Tiny, GUILayout.Width(104f));
 
         GUILayout.FlexibleSpace();
+
+        // ===== 链接跳转按钮 =====
+        // GitHub 链接
+        if (Btn("GitHub", "打开 GitHub 项目主页", BtnKind.Ghost, 72f))
+            Application.OpenURL("https://github.com/zhaohuaican/UnityModelChecker");
+
+        Spacer(Tok.S2);
+
+        // 夸克网盘链接
+        if (Btn("夸克网盘", "夸克网盘分享链接", BtnKind.Ghost, 80f))
+            Application.OpenURL("https://pan.quark.cn/s/a3dbc8a870e0");
+
+        Spacer(Tok.S2);
+        // ======================
 
         // 低频：配置
         if (Btn(configOpen ? "收起配置" : "配置", "展开/收起阈值与检查项设置", BtnKind.Ghost, 72f))
